@@ -25,6 +25,7 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.palette.graphics.Palette
 import kotlin.random.Random
 
 class GameActivity : AppCompatActivity() {
@@ -88,7 +89,6 @@ class GameActivity : AppCompatActivity() {
         correspondanceCard.contentBackgroundColor = slightlyDarker
         correspondanceCard.labelBackgroundColor = darker
 
-
     }
 
     override fun onDestroy() {
@@ -101,6 +101,10 @@ class GameActivity : AppCompatActivity() {
             editor.putInt("bestscore", score)
             editor.apply()
         }
+    }
+
+    private fun handleColor(dominantColor: Int){
+        Log.e("game", dominantColor.toString())
     }
 
     // Callback de la caméra
@@ -139,7 +143,15 @@ class GameActivity : AppCompatActivity() {
 
                 override fun onSurfaceTextureDestroyed(surface: SurfaceTexture): Boolean = true
 
-                override fun onSurfaceTextureUpdated(surface: SurfaceTexture) {}
+                override fun onSurfaceTextureUpdated(surface: SurfaceTexture) {
+                    // Récupère le bitmap actuel du preview
+                    val bitmap = preview.bitmap
+                    if (bitmap != null) {
+                        Palette.from(bitmap).generate { palette ->
+                             handleColor(palette?.getDominantSwatch()?.rgb ?: 0)
+                        }
+                    }
+                }
             }
         }
     }
