@@ -1,6 +1,5 @@
 package com.example.colorgamberge
 
-import androidx.annotation.IdRes
 import android.view.View
 import androidx.cardview.widget.CardView
 import android.graphics.Color
