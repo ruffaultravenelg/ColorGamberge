@@ -2,8 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="containerColor">#BB769E</color>
-    <color name="labelCardColor">#89446C</color>
-    <color name="scoreTextColor">#FFFFFF</color>
-    <color name="labelTextColor">#FFFFFF</color>
+    <color name="primary">#BB769E</color>
+    <color name="primaryDarker">#89446C</color>
+    <color name="background">#FBEECC</color>
 </resources>
