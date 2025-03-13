@@ -1,12 +1,15 @@
 package com.example.colorgamberge
 
 import android.Manifest.permission.CAMERA
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
+import android.os.CountDownTimer
+import android.util.Log
 import android.view.TextureView
 import android.view.View
 import androidx.activity.enableEdgeToEdge
@@ -22,6 +25,10 @@ import androidx.core.content.edit
 
 @RequiresApi(Build.VERSION_CODES.P)
 class GameActivity : AppCompatActivity(), PreviewColorCallback {
+
+    // Chronomètre
+    private lateinit var countDownTimer: CountDownTimer
+    private var timeLeftInMillis: Long = 15000 // 15 secondes
 
     // Éléments de l'interface
     private lateinit var base: ConstraintLayout
@@ -72,6 +79,7 @@ class GameActivity : AppCompatActivity(), PreviewColorCallback {
 
     override fun onDestroy() {
         super.onDestroy()
+        countDownTimer.cancel()
         // Sauvegarde du meilleur score
         val sharedPreferences = getSharedPreferences("gamedata", MODE_PRIVATE)
         val currentBestScore = sharedPreferences.getInt("bestscore", 0)
@@ -104,6 +112,37 @@ class GameActivity : AppCompatActivity(), PreviewColorCallback {
         // Set hitbox stroke color
         hitboxDrawable.setStroke(10, currentColor)
 
+        // Réinitialiser le chronomètre à 15 secondes
+        timeLeftInMillis = 15000
+        startTimer()
+
+    }
+
+    private fun startTimer() {
+        if (::countDownTimer.isInitialized) {
+            countDownTimer.cancel() // Annuler le timer précédent seulement s'il est initialisé
+        }
+        countDownTimer = object : CountDownTimer(timeLeftInMillis, 10) {
+            @SuppressLint("DefaultLocale")
+            override fun onTick(millisUntilFinished: Long) {
+                timeLeftInMillis = millisUntilFinished
+                val seconds = millisUntilFinished / 1000.0
+                timingCard.contentText = String.format("%.2fs", seconds)
+            }
+
+            override fun onFinish() {
+                timingCard.contentText = "0.00s"
+                gameOver()
+            }
+        }
+        countDownTimer.start()
+    }
+
+    private fun gameOver() {
+        countDownTimer.cancel()
+        // Afficher un message ou lancer une nouvelle activité de Game Over
+        timingCard.labelText = "Game Over!"
+        correspondanceCard.contentText = "Score final: $score"
     }
 
     /**
@@ -121,7 +160,6 @@ class GameActivity : AppCompatActivity(), PreviewColorCallback {
         // Check if color
         if (percent > 95){
             score++
-            timingCard.labelText = "Score: $score"
             newColor()
         }
 
