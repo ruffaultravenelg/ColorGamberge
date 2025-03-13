@@ -111,3 +111,9 @@ fun compare(a: Int, b: Int): Int {
     val maxDelta = 100.0 // valeur théorique maximale pour une grande différence
     return ((1 - delta / maxDelta) * 100).toInt()
 }
+
+
+class test{
+    val test: Int = (Math.random() * 100).toInt()
+}
+val A = test()

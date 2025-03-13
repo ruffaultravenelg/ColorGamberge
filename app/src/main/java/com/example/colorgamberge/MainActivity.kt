@@ -2,6 +2,7 @@ package com.example.colorgamberge
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -13,6 +14,8 @@ class MainActivity : AppCompatActivity() {
     // Elements
     private lateinit var bestScore: CloudCard
     private lateinit var newGameBtn: Button
+    private lateinit var settingsBtn: Button
+    private lateinit var rulesBtn: Button
 
     // First activity
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -30,16 +33,35 @@ class MainActivity : AppCompatActivity() {
         // Get xml elements
         bestScore = CloudCard(findViewById(R.id.bestScore))
         newGameBtn = findViewById(R.id.newGameBtn)
-
-        // Get bestscore
-        val sharedPreferences = getSharedPreferences("gamedata", MODE_PRIVATE)
-        bestScore.contentText = sharedPreferences.getInt("bestscore", 0).toString()
+        settingsBtn = findViewById(R.id.settings)
+        rulesBtn = findViewById(R.id.rules)
 
         // Set new game click event
         newGameBtn.setOnClickListener {
             val intent = Intent(this, GameActivity::class.java)
             startActivity(intent)
         }
+
+        // Set setting click
+        settingsBtn.setOnClickListener {
+            val intent = Intent(this, SettingsActivity::class.java)
+            startActivity(intent)
+        }
+
+        // Set colors
+        newGameBtn.setBackgroundColor(SESSION_SETTINGS.primarySlightlyDarker)
+        rulesBtn.setBackgroundColor(SESSION_SETTINGS.primarySlightlyDarker)
+        settingsBtn.setBackgroundColor(SESSION_SETTINGS.primarySlightlyDarker)
+        bestScore.labelBackgroundColor = SESSION_SETTINGS.primaryDarker
+        bestScore.contentBackgroundColor = SESSION_SETTINGS.primarySlightlyDarker
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        // Get bestscore
+        bestScore.contentText = storageReadInt(this, "bestscore", 0).toString()
 
     }
 

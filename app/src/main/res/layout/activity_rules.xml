@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FBEECC"
-    tools:context=".MainActivity">
+    tools:context=".RulesActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
@@ -22,48 +22,39 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
 
-        <include layout="@layout/cloud_card"
-            android:id="@+id/bestScore" />
-
-        <Button
-            android:id="@+id/settings"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/titleCard"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="110dp"
-            android:height="80dp"
-            android:backgroundTint="#BB769E"
-            android:text="Paramètres"
-            android:textColor="@color/white"
-            android:textSize="18sp"
+            android:layout_height="80dp"
+            android:backgroundTint="@color/primary"
+            app:cardCornerRadius="50dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Règles"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:translationY="4dp" />
+        </androidx.cardview.widget.CardView>
 
         <Button
-            android:id="@+id/rules"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:height="80dp"
-            android:backgroundTint="#BB769E"
-            android:text="Règles"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="@id/settings"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/settings" />
-
-        <Button
-            android:id="@+id/newGameBtn"
+            android:id="@+id/returnBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:height="80dp"
             android:backgroundTint="#BB769E"
-            android:text="Jouer"
+            android:text="Fermer"
             android:textColor="@color/white"
             android:textSize="18sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

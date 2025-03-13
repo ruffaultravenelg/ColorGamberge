@@ -23,6 +23,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.content.edit
 
+const val COLR_MATCH_THRESHOLD = 70
+
 @RequiresApi(Build.VERSION_CODES.P)
 class GameActivity : AppCompatActivity(), PreviewColorCallback {
 
@@ -80,13 +82,10 @@ class GameActivity : AppCompatActivity(), PreviewColorCallback {
     override fun onDestroy() {
         super.onDestroy()
         countDownTimer.cancel()
+
         // Sauvegarde du meilleur score
-        val sharedPreferences = getSharedPreferences("gamedata", MODE_PRIVATE)
-        val currentBestScore = sharedPreferences.getInt("bestscore", 0)
-        if (score > currentBestScore) {
-            sharedPreferences.edit() {
-                putInt("bestscore", score)
-            }
+        if (score > storageReadInt(this, "bestscore")) {
+            storageWriteInt(this, "bestscore", score)
         }
     }
 
@@ -115,7 +114,7 @@ class GameActivity : AppCompatActivity(), PreviewColorCallback {
         // Réinitialiser le chronomètre à 15 secondes
         timeLeftInMillis = 15000
         startTimer()
-
+        timingCard.labelText = "$score"
     }
 
     private fun startTimer() {
@@ -158,7 +157,7 @@ class GameActivity : AppCompatActivity(), PreviewColorCallback {
         correspondanceCard.contentText = "$percent%"
 
         // Check if color
-        if (percent > 95){
+        if (percent > COLR_MATCH_THRESHOLD){
             score++
             newColor()
         }
