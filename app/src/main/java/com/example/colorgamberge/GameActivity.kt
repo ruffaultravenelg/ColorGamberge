@@ -154,7 +154,7 @@ class GameActivity : AppCompatActivity(), PreviewColorCallback {
         hitboxDrawable.setColor(color)
 
         // Update percent
-        val percent = colorSimilarity(color, currentColor);
+        val percent = compare(color, currentColor);
         correspondanceCard.contentText = "$percent%"
 
         // Check if color
