@@ -3,6 +3,7 @@ package com.example.colorgamberge
 import android.Manifest.permission.CAMERA
 import android.content.Context
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.graphics.SurfaceTexture
 import android.hardware.camera2.*
 import android.os.Build
@@ -54,6 +55,30 @@ class CameraHandler(
         }
     }
 
+    // Handle image bitmap
+    private fun handleBitman(img: Bitmap){
+
+        val size = 50
+        val centerX = img.width / 2
+        val centerY = img.height / 2
+
+        // Déterminer les coordonnées du carré centré
+        val left = (centerX - size / 2).coerceIn(0, img.width)
+        val top = (centerY - size / 2).coerceIn(0, img.height)
+        val right = (centerX + size / 2).coerceIn(0, img.width)
+        val bottom = (centerY + size / 2).coerceIn(0, img.height)
+
+        // Rogner l'image
+        val croppedBitmap = Bitmap.createBitmap(img, left, top, right - left, bottom - top)
+
+        // Analyser la couleur dominante
+        Palette.from(croppedBitmap).generate { palette ->
+            val color = palette?.dominantSwatch?.rgb ?: 0
+            callback.colorFound(color)
+        }
+
+    }
+
     /**
      * Démarre la caméra en s'assurant que le TextureView est disponible.
      */
@@ -75,10 +100,7 @@ class CameraHandler(
                     // Analyse de l'image actuelle et notification via le callback.
                     val bitmap = textureView.bitmap
                     if (bitmap != null) {
-                        Palette.from(bitmap).generate { palette ->
-                            val color = palette?.getDominantSwatch()?.rgb ?: 0
-                            callback.colorFound(color)
-                        }
+                        handleBitman(bitmap)
                     }
                 }
             }

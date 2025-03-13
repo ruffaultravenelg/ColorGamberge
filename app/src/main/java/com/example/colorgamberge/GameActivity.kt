@@ -4,10 +4,11 @@ import android.Manifest.permission.CAMERA
 import android.content.pm.PackageManager
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.TextureView
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.annotation.RequiresPermission
@@ -17,7 +18,6 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
-import kotlin.random.Random
 import androidx.core.content.edit
 
 @RequiresApi(Build.VERSION_CODES.P)
@@ -29,6 +29,7 @@ class GameActivity : AppCompatActivity(), PreviewColorCallback {
     private lateinit var correspondanceCard: CloudCard
     private lateinit var previewContainer: CardView
     private lateinit var preview: TextureView
+    private lateinit var hitboxDrawable: GradientDrawable
 
     // Propriété du jeu
     private var currentColor: Int = Color.WHITE
@@ -54,12 +55,8 @@ class GameActivity : AppCompatActivity(), PreviewColorCallback {
         correspondanceCard = CloudCard(findViewById(R.id.correspondanceCard))
         previewContainer = findViewById(R.id.previewContainer)
         preview = findViewById(R.id.preview)
-
-        // Paramétrage des textes
-        timingCard.labelText = "Temps restant"
-        timingCard.contentText = "15.00s"
-        correspondanceCard.labelText = "Correspondance"
-        correspondanceCard.contentText = "0%"
+        val hitbox: View = findViewById(R.id.hitbox)
+        hitboxDrawable = hitbox.background as GradientDrawable
 
         // Demande de la permission caméra
         ActivityCompat.requestPermissions(this, arrayOf(CAMERA), PackageManager.PERMISSION_GRANTED)
@@ -68,14 +65,9 @@ class GameActivity : AppCompatActivity(), PreviewColorCallback {
         cameraHandler = CameraHandler(this, preview, this)
         cameraHandler.startCamera()
 
-        currentColor = generateRandomPastelColor()
-        val (slightlyDarker, darker) = generateShades(currentColor)
+        // Get new color
+        newColor();
 
-        base.backgroundTintList = ColorStateList.valueOf(currentColor)
-        timingCard.contentBackgroundColor = slightlyDarker
-        timingCard.labelBackgroundColor = darker
-        correspondanceCard.contentBackgroundColor = slightlyDarker
-        correspondanceCard.labelBackgroundColor = darker
     }
 
     override fun onDestroy() {
@@ -90,13 +82,49 @@ class GameActivity : AppCompatActivity(), PreviewColorCallback {
         }
     }
 
+    private fun newColor(){
+
+        // Get a new color
+        currentColor = generateRandomPastelColor()
+        val (slightlyDarker, darker) = generateShades(currentColor)
+
+        // Paramétrage des textes
+        timingCard.labelText = "Score: 0"
+        timingCard.contentText = "15.00s"
+        correspondanceCard.labelText = "Correspondence"
+        correspondanceCard.contentText = "0%"
+
+        // Set widjets color
+        base.backgroundTintList = ColorStateList.valueOf(currentColor)
+        timingCard.contentBackgroundColor = slightlyDarker
+        timingCard.labelBackgroundColor = darker
+        correspondanceCard.contentBackgroundColor = slightlyDarker
+        correspondanceCard.labelBackgroundColor = darker
+
+        // Set hitbox stroke color
+        hitboxDrawable.setStroke(10, currentColor)
+
+    }
+
     /**
      * Implémentation du callback de couleur détectée.
      */
     override fun colorFound(color: Int) {
-        correspondanceCard.contentBackgroundColor = color;
+
+        // Update hitbox color
+        hitboxDrawable.setColor(color)
+
+        // Update percent
         val percent = colorSimilarity(color, currentColor);
         correspondanceCard.contentText = "$percent%"
+
+        // Check if color
+        if (percent > 95){
+            score++
+            timingCard.labelText = "Score: $score"
+            newColor()
+        }
+
     }
 
 

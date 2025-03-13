@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -17,19 +17,16 @@
         android:layout_marginBottom="40dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
 
-    <include
-        android:id="@+id/timingCard"
-        layout="@layout/cloud_card"
-        app:layout_constraintBottom_toTopOf="@id/previewContainer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
+        <include
+            android:id="@+id/timingCard"
+            layout="@layout/cloud_card"
+            app:layout_constraintBottom_toTopOf="@id/previewContainer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/previewContainer"
@@ -42,7 +39,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintDimensionRatio="5:6" >
+            app:layout_constraintDimensionRatio="5:6">
 
             <TextureView
                 android:id="@+id/preview"
@@ -50,17 +47,27 @@
                 android:layout_height="wrap_content" />
         </androidx.cardview.widget.CardView>
 
-
+        <!-- Cercle pour indiquer la zone d'analyse -->
+        <View
+            android:id="@+id/hitbox"
+            android:layout_width="100px"
+            android:layout_height="100px"
+            android:background="@drawable/circle_shape"
+            app:layout_constraintTop_toTopOf="@id/previewContainer"
+            app:layout_constraintBottom_toBottomOf="@id/previewContainer"
+            app:layout_constraintStart_toStartOf="@id/previewContainer"
+            app:layout_constraintEnd_toEndOf="@id/previewContainer"
+            android:elevation="10dp" />
 
         <include
-        android:id="@+id/correspondanceCard"
-        layout="@layout/cloud_card"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/previewContainer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+            android:id="@+id/correspondanceCard"
+            layout="@layout/cloud_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/previewContainer"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

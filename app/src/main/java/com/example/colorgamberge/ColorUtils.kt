@@ -3,6 +3,8 @@ package com.example.colorgamberge
 import android.graphics.Color
 import kotlin.random.Random
 import kotlin.math.abs
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 fun generateRandomPastelColor(): Int {
     val base = 128 // Valeur minimum pour assurer une teinte pastel (entre 128 et 255)
@@ -39,29 +41,35 @@ fun generateShades(color: Int): Pair<Int, Int> {
     return Pair(slightlyDarker, darker)
 }
 
-
 fun colorSimilarity(color1: Int, color2: Int): Int {
-    // Conversion des couleurs RGB en HSL
-    val hsl1 = FloatArray(3)
-    val hsl2 = FloatArray(3)
-    Color.colorToHSV(color1, hsl1)
-    Color.colorToHSV(color2, hsl2)
+    // Extraire les composantes RGB
+    val r1 = Color.red(color1) / 255.0
+    val g1 = Color.green(color1) / 255.0
+    val b1 = Color.blue(color1) / 255.0
 
-    // Calcul des différences pour chaque composante
-    val hueDiff = abs(hsl1[0] - hsl2[0]) / 360f // Teinte (0 à 360 degrés)
-    val satDiff = abs(hsl1[1] - hsl2[1])        // Saturation (0.0 à 1.0)
-    val lightDiff = abs(hsl1[2] - hsl2[2])      // Luminosité (0.0 à 1.0)
+    val r2 = Color.red(color2) / 255.0
+    val g2 = Color.green(color2) / 255.0
+    val b2 = Color.blue(color2) / 255.0
 
-    // Pondération : la teinte est souvent plus importante que la saturation et la luminosité
-    val hueWeight = 0.6f
-    val satWeight = 0.25f
-    val lightWeight = 0.15f
+    // Calculer la luminance relative (pondération perceptuelle)
+    val luminance1 = 0.299 * r1 + 0.587 * g1 + 0.114 * b1
+    val luminance2 = 0.299 * r2 + 0.587 * g2 + 0.114 * b2
 
-    // Calcul de la différence globale (0 = identique, 1 = totalement différent)
-    val difference = (hueDiff * hueWeight) + (satDiff * satWeight) + (lightDiff * lightWeight)
+    // Ajustement pour réduire l'impact des couleurs très claires
+    val weight = 1.0 - ((luminance1 + luminance2) / 2.0)
 
-    // Conversion en pourcentage de similarité (100% = identique, 0% = totalement différent)
-    val similarity = 100 * (1 - difference)
+    // Distance euclidienne ajustée
+    val distance = sqrt(
+        weight * (r2 - r1).pow(2.0) +
+                weight * (g2 - g1).pow(2.0) +
+                weight * (b2 - b1).pow(2.0)
+    )
+
+    // Distance maximale ajustée (pondérée)
+    val maxDistance = sqrt(3.0) // distance max normalisée (1.0 pour chaque canal)
+
+    // Calcul du pourcentage de similarité
+    val similarity = (1 - (distance / maxDistance)) * 100
 
     return similarity.toInt().coerceIn(0, 100)
 }
