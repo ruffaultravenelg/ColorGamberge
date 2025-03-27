@@ -2,10 +2,8 @@ package com.example.colorgamberge
 
 import android.graphics.Color
 import kotlin.random.Random
-import kotlin.math.abs
-import kotlin.math.pow
-import kotlin.math.sqrt
 
+// Generate a random pastel color for interface
 fun generateRandomPastelColor(): Int {
     val base = 128 // Valeur minimum pour assurer une teinte pastel (entre 128 et 255)
     val red = base + Random.nextInt(128)
@@ -14,6 +12,7 @@ fun generateRandomPastelColor(): Int {
     return Color.rgb(red, green, blue)
 }
 
+// Take a color and generate two shades (slightly darker and darker)
 fun generateShades(color: Int): Pair<Int, Int> {
     // Récupération des composants RGB
     val red = Color.red(color)
@@ -40,6 +39,16 @@ fun generateShades(color: Int): Pair<Int, Int> {
 
     return Pair(slightlyDarker, darker)
 }
+
+/*
+    Les fonctions suivantes servent à estimer la correspondance entre deux couleurs.
+    En effet, des couleurs que l'œil humain perçoit comme très différentes peuvent sembler similaires lors d'une simple comparaison en RGB.
+
+    Pour résoudre ce problème, une autre façon de stocker les couleurs a été inventée : le modèle L*a*b*.
+    Ce modèle permet des comparaisons plus proches de la perception humaine.
+
+    Je ne vais pas prétendre comprendre ce que font les fonctions ci-dessous, c'est du copier-coller.
+*/
 
 // Conversion d'une valeur RGB dans la gamme [0, 255] à la gamme [0, 1]
 fun normalizeRgb(rgb: Int): Double {
@@ -111,9 +120,3 @@ fun compare(a: Int, b: Int): Int {
     val maxDelta = 100.0 // valeur théorique maximale pour une grande différence
     return ((1 - delta / maxDelta) * 100).toInt()
 }
-
-
-class test{
-    val test: Int = (Math.random() * 100).toInt()
-}
-val A = test()

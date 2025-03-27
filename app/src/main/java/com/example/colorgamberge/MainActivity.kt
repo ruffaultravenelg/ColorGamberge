@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var newGameBtn: Button
     private lateinit var settingsBtn: Button
     private lateinit var rulesBtn: Button
+    private lateinit var creditsBtn: Button
 
     // First activity
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,8 +34,9 @@ class MainActivity : AppCompatActivity() {
         // Get xml elements
         bestScore = CloudCard(findViewById(R.id.bestScore))
         newGameBtn = findViewById(R.id.newGameBtn)
-        settingsBtn = findViewById(R.id.settings)
-        rulesBtn = findViewById(R.id.rules)
+        settingsBtn = findViewById(R.id.settingsBtn)
+        rulesBtn = findViewById(R.id.rulesBtn)
+        creditsBtn = findViewById(R.id.creditsBtn)
 
         // Set new game click event
         newGameBtn.setOnClickListener {
@@ -48,10 +50,23 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        // Set setting click
+        rulesBtn.setOnClickListener {
+            val intent = Intent(this, RulesActivity::class.java)
+            startActivity(intent)
+        }
+
+        // Set credits click
+        creditsBtn.setOnClickListener {
+            val intent = Intent(this, CreditActivity::class.java)
+            startActivity(intent)
+        }
+
         // Set colors
         newGameBtn.setBackgroundColor(SESSION_SETTINGS.primarySlightlyDarker)
         rulesBtn.setBackgroundColor(SESSION_SETTINGS.primarySlightlyDarker)
         settingsBtn.setBackgroundColor(SESSION_SETTINGS.primarySlightlyDarker)
+        creditsBtn.setBackgroundColor(SESSION_SETTINGS.primarySlightlyDarker)
         bestScore.labelBackgroundColor = SESSION_SETTINGS.primaryDarker
         bestScore.contentBackgroundColor = SESSION_SETTINGS.primarySlightlyDarker
 

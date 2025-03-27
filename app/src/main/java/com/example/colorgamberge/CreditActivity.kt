@@ -5,21 +5,19 @@ import android.os.Bundle
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
-class RulesActivity : AppCompatActivity() {
+class CreditActivity : AppCompatActivity() {
 
     private lateinit var returnBtn: Button
-    private lateinit var titleCard: CardView
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
         // Stuff
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_rules)
+        setContentView(R.layout.activity_credit)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -28,7 +26,6 @@ class RulesActivity : AppCompatActivity() {
 
         // Load elements by ids
         returnBtn = findViewById(R.id.returnBtn)
-        titleCard = findViewById(R.id.titleCard)
 
         // Set return click
         returnBtn.setOnClickListener {
@@ -37,7 +34,6 @@ class RulesActivity : AppCompatActivity() {
 
         // Load colors
         returnBtn.setBackgroundColor(SESSION_SETTINGS.primaryColor)
-        titleCard.backgroundTintList = ColorStateList.valueOf(SESSION_SETTINGS.primarySlightlyDarker)
 
     }
 }

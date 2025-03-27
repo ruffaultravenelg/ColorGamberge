@@ -23,10 +23,15 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.content.edit
 
-const val COLR_MATCH_THRESHOLD = 70
+const val BASE_COLOR_MATCH_THRESHOLD = 70
+const val BASE_TIME_PER_COLOR = 1500
 
 @RequiresApi(Build.VERSION_CODES.P)
 class GameActivity : AppCompatActivity(), PreviewColorCallback {
+
+    // Game settings
+    private var timePerColor: Long = BASE_TIME_PER_COLOR.toLong()
+    private var colorMatchThreshold: Int = BASE_COLOR_MATCH_THRESHOLD
 
     // Chronomètre
     private lateinit var countDownTimer: CountDownTimer
@@ -74,6 +79,10 @@ class GameActivity : AppCompatActivity(), PreviewColorCallback {
         cameraHandler = CameraHandler(this, preview, this)
         cameraHandler.startCamera()
 
+        // Get game settings
+        timePerColor = storageReadInt(this, "TIME_PER_COLOR", BASE_TIME_PER_COLOR).toLong()
+        colorMatchThreshold = storageReadInt(this, "COLOR_MATCH_THRESHOLD", BASE_COLOR_MATCH_THRESHOLD)
+
         // Get new color
         newColor();
 
@@ -112,7 +121,7 @@ class GameActivity : AppCompatActivity(), PreviewColorCallback {
         hitboxDrawable.setStroke(10, currentColor)
 
         // Réinitialiser le chronomètre à 15 secondes
-        timeLeftInMillis = 15000
+        timeLeftInMillis = timePerColor
         startTimer()
         timingCard.labelText = "$score"
     }
@@ -157,7 +166,7 @@ class GameActivity : AppCompatActivity(), PreviewColorCallback {
         correspondanceCard.contentText = "$percent%"
 
         // Check if color
-        if (percent > COLR_MATCH_THRESHOLD){
+        if (percent > colorMatchThreshold){
             score++
             newColor()
         }

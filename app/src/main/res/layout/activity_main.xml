@@ -26,11 +26,11 @@
             android:id="@+id/bestScore" />
 
         <Button
-            android:id="@+id/settings"
+            android:id="@+id/settingsBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="110dp"
-            android:height="80dp"
+            android:layout_marginTop="130dp"
+            android:height="60dp"
             android:backgroundTint="#BB769E"
             android:text="Paramètres"
             android:textColor="@color/white"
@@ -40,18 +40,32 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/rules"
+            android:id="@+id/rulesBtn"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:height="80dp"
+            android:height="60dp"
             android:backgroundTint="#BB769E"
             android:text="Règles"
             android:textColor="@color/white"
             android:textSize="18sp"
-            app:layout_constraintEnd_toEndOf="@id/settings"
+            app:layout_constraintEnd_toEndOf="@id/settingsBtn"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/settings" />
+            app:layout_constraintTop_toBottomOf="@+id/settingsBtn" />
+
+        <Button
+            android:id="@+id/creditsBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:height="60dp"
+            android:backgroundTint="#BB769E"
+            android:text="Credits"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="@id/rulesBtn"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rulesBtn" />
 
         <Button
             android:id="@+id/newGameBtn"
